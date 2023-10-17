@@ -24,11 +24,11 @@ int _printf(const char *format, ...)
 	{
 	switch (*++format)
 	{
-	case 'd':
-	count += fprintf(stdout, "%d", va_arg(args, int));
+	case 'c':
+	count += fprintf(stdout, "%c", va_arg(args, char));
 	break;
-	case 'i':
-	count += fprintf(stdout, "%d", va_arg(args, int));
+	case 's':
+	count += fprintf(stdout, "%s", va_arg(args, char *));
 	break;
 	default:
 	putchar('%');
