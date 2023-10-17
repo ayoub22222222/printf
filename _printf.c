@@ -8,37 +8,39 @@
  */
 int _printf(const char *format, ...)
 {
-	va_list ap;
-	const char *p, *sval;
-	int ival;
-	double dval;
+	va_list args;
 
-	va_start(ap, fmt);
-	for (p = fmt; *p; p++)
+	va_start(args, format);
+
+	int count = 0;
+
+	while (*format != '\0')
 	{
-	if (*p != '%')
+	if (*format != '%')
 	{
-	putchar(*p);
-	continue;
+	putchar(*format);
+	count++;
 	}
-	switch (*++p)
+	else
+	{
+	switch (*++format)
 	{
 	case 'd':
-	ival = va_arg(ap, int);
-	printf("%d", ival);
+	count += fprintf(stdout, "%d", va_arg(args, int));
 	break;
-	case 'f':
-	dval = va_arg(ap, double);
-	printf("%f", dval);
-	break;
-	case 's':
-	for (sval = va_arg(ap, char *); *sval; sval++)
-	putchar(*sval);
+	case 'i':
+	count += fprintf(stdout, "%d", va_arg(args, int));
 	break;
 	default:
-	putchar(*p);
+	putchar('%');
+	putchar(*format);
+	count += 2;
 	break;
 	}
 	}
-	va_end(ap);
+	format++;
+	}
+
+	va_end(args);
+	return (count);
 }
