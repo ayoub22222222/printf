@@ -1,9 +1,9 @@
 #include "main.h"
+
 /**
- * _printf - mimic print function
- * @format: the last input
- * @...: infinit number of argument
- * Return: print
+ * _printf - print anything
+ * @format: list of argument types passed to the function
+ * Return: number of characters printed
  */
 int _printf(const char *format, ...)
 {
