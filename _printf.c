@@ -1,45 +1,36 @@
 #include "main.h"
+
 /**
- * _printf - is a function that selects the correct function to print.
- * @format: identifier to look for.
- * Return: the length of the string.
+ * _printf - print anything
+ * @format: list of argument types passed to the function
+ * Return: number of characters printed
  */
-int _printf(const char * const format, ...)
+int _printf(const char *format, ...)
 {
-	convert_match m[] = {
-		{"%s", printf_string}, {"%c", printf_char},
-		{"%%", printf_37},
-		{"%i", printf_int}, {"%d", printf_dec}, {"%r", printf_srev},
-		{"%R", printf_rot13}, {"%b", printf_bin}, {"%u", printf_unsigned},
-		{"%o", printf_oct}, {"%x", printf_hex}, {"%X", printf_HEX},
-		{"%S", printf_exclusive_string}, {"%p", printf_pointer}
-	};
-
+	int i = 0;
+	int printed_chars = 0;
 	va_list args;
-	int i = 0, j, len = 0;
 
-	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
 
-Here:
-	while (format[i] != '\0')
+	va_start(args, format);
+
+	while (format && format[i])
 	{
-		j = 13;
-		while (j >= 0)
+		if (format[i] == '%')
 		{
-			if (m[j].id[0] == format[i] && m[j].id[1] == format[i + 1])
-			{
-				len += m[j].f(args);
-				i = i + 2;
-				goto Here;
-			}
-			j--;
+			i++;
+			printed_chars += format_handler(format[i], args);
 		}
-		_putchar(format[i]);
-		len++;
+		else
+		{
+			printed_chars += _putchar(format[i]);
+		}
 		i++;
 	}
 	va_end(args);
-	return (len);
+	return (printed_chars);
 }
